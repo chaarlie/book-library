@@ -16,6 +16,6 @@ public class HTMLDocumentStrategy implements DocumentStrategy {
     @Override
     public String format(Book b, int page) {
         List<BookPage> pages = b.getPages();
-        return ConvertTextToHTML.parse(pages.get(page-1).getContent());
+        return ConvertTextToHTML.parse(pages.get(page).getContent());
     }
 }

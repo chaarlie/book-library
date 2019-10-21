@@ -1,5 +1,6 @@
 package com.gbh.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 public class BookPage {
     @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
     @Getter @Setter
@@ -19,6 +20,9 @@ public class BookPage {
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name="book_id",referencedColumnName="id", nullable = false, unique = true)
-    @JsonManagedReference
+    @JsonBackReference
     private  Book book;
+
+    public  BookPage() {}
+
 }
