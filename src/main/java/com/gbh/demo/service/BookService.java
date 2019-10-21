@@ -8,11 +8,12 @@ import com.gbh.demo.model.BookPage;
 import com.gbh.demo.repository.BookPageRepository;
 import com.gbh.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class BookService {
@@ -23,20 +24,8 @@ public class BookService {
     @Autowired
     BookPageRepository bookPageRepository;
 
-    public BookPage createPage(int id, BookPage page) throws BookLibraryException {
-        Book book = bookRepository.findById(id).orElseThrow( () -> new BookNotFoundException(id));
-
-        page.setBook(book);
-        BookPage savedPage = bookPageRepository.save(page);
-
-        book.getPages().add(savedPage);
-        bookRepository.save(book);
-
-        return savedPage;
-    }
-
     public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+        return (List<Book>) bookRepository.findAll();
     }
 
     public Optional<Book> findBookById(int id) {
@@ -57,35 +46,56 @@ public class BookService {
         return bookRepository.save(foundBook.get());
     }
 
-    public void deleteBook(int id) throws BookLibraryException {
-        Optional<Book> book = bookRepository.findById(id);
-        if(book.isPresent()) {
-            bookRepository.deleteById(id);
-        }
-        else throw new BookNotFoundException(id);
+    public int deleteBook(int id) throws BookLibraryException {
+        bookRepository.findById(id).orElseThrow( () -> new BookNotFoundException(id));
+
+        bookRepository.deleteById(id);
+
+        return id;
+    }
+
+    public BookPage findPage(int bookId, int pageId) throws BookLibraryException {
+        Book book = bookRepository.findById(bookId).orElseThrow( () -> new BookNotFoundException(bookId));
+
+        List<BookPage> pages = IntStream.range(0, book.getPages().size()).mapToObj(i -> {
+            if(i == pageId) return book.getPages().get(i);
+            return null;
+        }).filter(p-> p!= null).collect(Collectors.toList());
+
+        if(pages == null || pages.size() == 0) throw new PageNotFoundException(pageId, book);
+
+        return pages.get(0);
+    }
+
+    public BookPage createPage(int id, BookPage page) throws BookLibraryException {
+        Book book = bookRepository.findById(id).orElseThrow( () -> new BookNotFoundException(id));
+
+        page.setBook(book);
+        BookPage savedPage = bookPageRepository.save(page);
+
+        book.getPages().add(savedPage);
+        bookRepository.save(book);
+
+        return savedPage;
     }
 
     public BookPage updatePage(int bookId, int pageId, BookPage page) throws BookLibraryException {
-        Book book = bookRepository.findById(bookId).orElseThrow( () -> new BookNotFoundException(bookId));
 
-        book.getPages()
-                .stream()
-                .fl((p) -> p.getId() == pageId)
-                .findAny().orElseThrow(() -> new PageNotFoundException(pageId, book));
+        BookPage foundPage = findPage(bookId, pageId);
+        foundPage.setContent(page.getContent());
 
-        book.getPages().get(pageId-1).setContent(page.getContent());
-        bookRepository.save(book);
-
-        return book.getPages().get(pageId-1);
+        return bookPageRepository.save(foundPage);
     }
 
-    public int deletePage(int id, int pageId) throws BookLibraryException {
-        Book book = bookRepository.findById(id).orElseThrow( () -> new BookNotFoundException(id));
-        if(!book.getPages().contains(pageId-1)) throw new PageNotFoundException(pageId, book);
+    public int deletePage(int bookId, int pageId) throws BookLibraryException {
+        Book book = bookRepository.findById(bookId).orElseThrow( () -> new BookNotFoundException(bookId));
+        int deleteId = findPage(bookId, pageId).getId();
 
-        book.getPages().remove(pageId-1);
+        bookPageRepository.deleteById(deleteId);
+
+        book.getPages().removeIf( p -> p.getId() == deleteId);
         bookRepository.save(book);
 
-        return pageId+1;
+        return deleteId;
     }
 }

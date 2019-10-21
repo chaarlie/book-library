@@ -1,7 +1,6 @@
 package com.gbh.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,10 +18,7 @@ public class BookPage {
 
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name="book_id",referencedColumnName="id", nullable = false, unique = true)
+    @JoinColumn (name = "book_id", referencedColumnName = "id", nullable = false, unique = true)
     @JsonBackReference
     private  Book book;
-
-    public  BookPage() {}
-
 }

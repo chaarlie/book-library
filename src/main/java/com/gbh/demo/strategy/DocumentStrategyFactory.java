@@ -10,8 +10,8 @@ public class DocumentStrategyFactory {
         if("HTML".equals(strategy)) {
             resultStrategy = new HTMLDocumentStrategy();
         }
-        else if("PDF".equals(strategy)) {
-            resultStrategy = new PDFDocumentStrategy();
+        else if("PLAIN".equals(strategy)) {
+            resultStrategy = new PlainTexDocumentStrategy();
         }
         return resultStrategy;
     }

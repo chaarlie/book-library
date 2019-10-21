@@ -17,7 +17,7 @@ public class Book {
     @Getter @Setter
     private String title;
     @Getter @Setter
-    @OneToMany(mappedBy = "book", targetEntity = BookPage.class, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = { CascadeType.REMOVE }, targetEntity = BookPage.class, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<BookPage> pages;
 }

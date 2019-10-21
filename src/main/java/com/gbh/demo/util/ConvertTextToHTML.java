@@ -2,7 +2,6 @@ package com.gbh.demo.util;
 
 public class ConvertTextToHTML {
     public static String parse(String text) {
-
         boolean prevSlashR = false;
         StringBuilder out = new StringBuilder();
         for(int i = 0; i < text.length(); i++) {
