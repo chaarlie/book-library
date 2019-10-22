@@ -43,39 +43,39 @@ public class BookController {
     int deleteBook(@PathVariable int id) throws BookLibraryException {
         return bookService.deleteBook(id);
     }
-    @GetMapping(value = "/html/{id}", produces = { MediaType.TEXT_HTML_VALUE })
+    @GetMapping(value = "/{id}/html", produces = { MediaType.TEXT_HTML_VALUE })
     String getBookInHTML(@PathVariable int id) throws BookNotFoundException {
         Book book = bookService.findBookById(id).orElseThrow( () -> new BookNotFoundException(id));
 
         DocumentStrategy strategy = documentStrategyFactory.createDocument("HTML");
         return strategy.format(book);
     }
-    @GetMapping(value = "/text/{id}", produces = { MediaType.TEXT_PLAIN_VALUE })
+    @GetMapping(value = "/{id}/text", produces = { MediaType.TEXT_PLAIN_VALUE })
     String getBookInPlainText(@PathVariable int id) throws BookNotFoundException {
         Book book = bookService.findBookById(id).orElseThrow( () -> new BookNotFoundException(id));
 
         DocumentStrategy strategy = documentStrategyFactory.createDocument("PLAIN");
         return strategy.format(book);
     }
-    @PostMapping(value = { "/html/{id}", "/text/{id}" })
+    @PostMapping(value = { "/{id}/html", "/{id}/text" })
     BookPage createPage(@PathVariable int id, @RequestBody  BookPage page) throws BookLibraryException {
         return bookService.createPage(id, page);
     }
-    @PutMapping(value = { "/html/{bookId}/{pageId}", "/text/{bookId}/{pageId}" })
+    @PutMapping(value = { "/{bookId}/page/{pageId}/html", "/{bookId}/page/{pageId}/text" })
     BookPage updatePage(@PathVariable int bookId, @PathVariable int pageId,  @RequestBody  BookPage page) throws BookLibraryException {
         return bookService.updatePage(bookId, pageId-1, page);
     }
-    @DeleteMapping(value = { "/html/{bookId}/{pageId}", "/text/{bookId}/{pageId}" })
+    @DeleteMapping(value = { "/{bookId}/page/{pageId}/html", "/{bookId}/page/{pageId}/text" })
     int deletePage(@PathVariable int bookId, @PathVariable int pageId) throws BookLibraryException {
         return bookService.deletePage(bookId, pageId-1);
     }
-    @GetMapping(value = "/html/{bookId}/{pageId}", produces = { MediaType.TEXT_HTML_VALUE })
+    @GetMapping(value = "/{bookId}/page/{pageId}/html", produces = { MediaType.TEXT_HTML_VALUE })
     String getBookInHTMLByPage(@PathVariable int bookId, @PathVariable int pageId) throws BookLibraryException {
         DocumentStrategy strategy = documentStrategyFactory.createDocument("HTML");
 
         return strategy.format(bookService.findPage(bookId, pageId-1), pageId);
     }
-    @GetMapping(value = "/text/{bookId}/{pageId}", produces = { MediaType.TEXT_PLAIN_VALUE })
+    @GetMapping(value = "/{bookId}/page/{pageId}/text", produces = { MediaType.TEXT_PLAIN_VALUE })
     String getBookInPlainTextByPage(@PathVariable int bookId, @PathVariable int pageId) throws BookLibraryException {
         DocumentStrategy strategy = documentStrategyFactory.createDocument("PLAIN");
 
