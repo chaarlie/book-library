@@ -40,9 +40,9 @@ El proyecto a continuación simula una librería, utilizando un API RestFul. Est
 
 <li> en la raíz del directorio, abrir la línea de comandos y ejecutar:</li>
       
-      - mvn clean package
-      - mvn flyway:migrate
-      - mvn spring-boot:run
+      mvn clean package
+      mvn flyway:migrate
+      mvn spring-boot:run
       
 
 <li> la aplicación estará corriendo en <em>localhost:8080/books/</em></li>
