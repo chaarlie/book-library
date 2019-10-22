@@ -19,10 +19,10 @@ import java.util.stream.IntStream;
 public class BookService {
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
-    BookPageRepository bookPageRepository;
+    private BookPageRepository bookPageRepository;
 
     public List<Book> findAllBooks() {
         return (List<Book>) bookRepository.findAll();

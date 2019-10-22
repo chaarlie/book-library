@@ -54,7 +54,7 @@ public class BookAppAPITests {
 
         Book savedBook = bookService.createBook(testBook);
         mvc.perform( MockMvcRequestBuilders
-                .get(String.format("books/%d/%d", savedBook.getId(), 1))
+                .get(String.format("books/%d/page/%d/html", savedBook.getId(), 1))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
