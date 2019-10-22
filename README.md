@@ -1,32 +1,51 @@
 # Biblioteca 
 
-Soluciones GBH acaba de contratarlo a ústed para crear su biblioteca en línea. La misma le instruyó construir un REST API el cuál permita sus clientes consumir el listado de libros disponibles, así como también, leer dichos libros página por página en el formato deseado. 
+El proyecto a continuación simula una librería, utilizando un API RestFul. Está hecho bajo el framework Spring 5 y utilizando la base de datos MySQL.  
+## Herramientas para correr el proyecto 
 
-Para esta primera iteración los libros estarán disponibles (página por página) en texto plano y HTML. En próximas iteraciones se agregará soporte para más formatos de lectura, y además, se agregará soporte para interconectarse con otros servicios proveedores de libros en línea. 
+- MySQL Server (corriendo en el 3306)
+- Maven
+- Java 8
 
-## Requerimientos Técnicos 
+## Cómo correr el proyecto
+<ol> 
+<li>crear una base de datos llamada <strong> book_db</strong></li>
+<li>modificar application.properties y escribir <em>usuario/contraseña</em> para las variables de flyway y user</li>
+    
+    spring.datasource.url = jdbc:mysql://localhost:3306/book_db?useSSL=false
+    spring.datasource.username = root
+    spring.datasource.password = Admin123
+    
+    spring.flyway.url = jdbc:mysql://localhost:3306/mysql
+    spring.flyway.schemas = book_db
+    spring.flyway.user = root
+    spring.flyway.password = Admin123
+      
+  
+<li>modificar la etiqueta del pom.xml para las credenciales y db</li>
 
-- Ver listado de libros
-- Visualizar un libro
-- Visualizar por página de un libro en el formato deseado.
-- Hacer uso de friendly routes (ej; /book/1 ó /book/1 /page/11/html).
-- Proveer seeders/migrations para la base de datos (libros con sus páginas).
-- Proveer una explicación de cómo configurar su proyecto. 
+    <plugin>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-maven-plugin</artifactId>
+      <version>6.0.7</version>
+      <configuration>
+          <url>jdbc:mysql://localhost:3306</url>
+          <user>root</user>
+          <password>Admin123</password>
+          <schemas>
+              <schema>book_db</schema>
+          </schemas>
+      </configuration>
+    </plugin>
 
-## Reglas
+<li> en la raíz del directorio, abrir la línea de comandos y ejecutar:</li>
+  <ol>
+  <li>mvn clean package </li>
+  <li>mvn flyway:migrate</li>
+  <li>mvn spring-boot:run</li>
+  </ol>
 
-- Use el lenguaje de programación Java 8 utilizando Spring Framework.
-- El uso de librerías de terceros es permitido y alentado.
-- Haga uso de .gitignore, evite al máximo incluir archivos innecesarios. 
+<li> la aplicación estará corriendo en <em>localhost:8080/books/</em></li>
+</ol>
 
-## Criterios de Evaluación 
-
-1. Requerimientos técnicos.
-2. Organización y consistencia de la estructura de archivos y folders.
-3. Modificabilidad y extensibilidad del sistema en los puntos requeridos. 
-4. Commit history (commits son organizados y descriptivos).
-5. Tiempo utilizado para completar la prueba.
-6. Complejidad de la solución.
-7. SOLID principles.
-8. Uso correcto de patrones de diseño. 
-
+Nota: en este enlace se puede acceder a la colleción de Postman: https://www.dropbox.com/s/pzdk7rcdtnlpnw9/Book%20Operations.postman_collection.json?dl=0
