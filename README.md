@@ -1,16 +1,14 @@
-# Biblioteca 
+The following API allows CRUD operations on a Book bean and returns the response in HTML/Plain text.
+## Tools
 
-El proyecto a continuación simula una librería, utilizando un API RestFul. Está hecho bajo el framework Spring 5 y utilizando la base de datos MySQL.  
-## Herramientas para correr el proyecto 
-
-- MySQL Server (corriendo en el 3306)
+- MySQL Server (port 3306)
 - Maven
 - Java 8
 
-## Cómo correr el proyecto
+## How to run
 <ol> 
-<li>crear una base de datos llamada <strong> book_db</strong></li>
-<li>modificar application.properties y escribir <em>usuario/contraseña</em> para las variables de flyway y user</li>
+<li>create database <strong> book_db</strong></li>
+<li>modify application.properties and type in <em>user/pass</em> for  flyway and db user</li>
     
     spring.datasource.url = jdbc:mysql://localhost:3306/book_db?useSSL=false
     spring.datasource.username = root
@@ -22,7 +20,7 @@ El proyecto a continuación simula una librería, utilizando un API RestFul. Est
     spring.flyway.password = Admin123
       
   
-<li>modificar la etiqueta del pom.xml para las credenciales y db</li>
+<li>modify pom.xml credentials</li>
 
     <plugin>
       <groupId>org.flywaydb</groupId>
@@ -38,14 +36,14 @@ El proyecto a continuación simula una librería, utilizando un API RestFul. Est
       </configuration>
     </plugin>
 
-<li> en la raíz del directorio, abrir la línea de comandos y ejecutar:</li>
+<li>in the root dir execute</li>
       
       mvn clean package
       mvn flyway:migrate
       mvn spring-boot:run
       
 
-<li> la aplicación estará corriendo en <em>localhost:8080/books/</em></li>
+<li> app should be running on <em>localhost:8080/books/</em></li>
 </ol>
 
-Nota: en este enlace se puede acceder a la colleción de Postman: https://www.dropbox.com/s/pzdk7rcdtnlpnw9/Book%20Operations.postman_collection.json?dl=0
+Note: you can find here the Postman collection: https://www.dropbox.com/s/pzdk7rcdtnlpnw9/Book%20Operations.postman_collection.json?dl=0
